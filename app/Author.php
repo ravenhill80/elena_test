@@ -11,4 +11,12 @@ class Author extends Model {
         'first_name', 'last_name'
     ];
     public $timestamps = false;
+
+    /**
+     * Get the book record associated with the author.
+     */
+    public function books() {
+        return $this->belongsTo('App\Book', 'id', 'author');
+    }
+
 }

@@ -2,18 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Http\Requests\GenreRequest;
+use App\Services\GenreService;
 
-class GenresController extends Controller
-{
+class GenresController extends Controller {
+
+    protected $genreService;
+
+    public function __construct(GenreService $genreService) {
+        $this->genreService = $genreService;
+    }
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        //
+    public function index() {
+        return $this->genreService->listGenres();
     }
 
     /**
@@ -22,9 +28,8 @@ class GenresController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
-        //
+    public function store(GenreRequest $request) {
+        return $this->genreService->storeGenre($request->all());
     }
 
     /**
@@ -33,9 +38,8 @@ class GenresController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
-        //
+    public function show($id) {
+        return $this->genreService->showGenre($id);
     }
 
     /**
@@ -45,9 +49,8 @@ class GenresController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
-        //
+    public function update(GenreRequest $request, $id) {
+        return $this->genreService->updateGenre($request->all(), $id);
     }
 
     /**
@@ -56,8 +59,8 @@ class GenresController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
-        //
+    public function destroy($id) {
+        return $this->genreService->destroyGenre($id);
     }
+
 }

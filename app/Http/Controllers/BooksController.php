@@ -2,18 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Http\Requests\BookRequest;
+use App\Services\BookService;
 
-class BooksController extends Controller
-{
+class BooksController extends Controller {
+
+    protected $bookService;
+
+    public function __construct(BookService $bookService) {
+        $this->bookService = $bookService;
+    }
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        //
+    public function index() {
+        return $this->bookService->listBooks();
     }
 
     /**
@@ -22,9 +28,8 @@ class BooksController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
-        //
+    public function store(BookRequest $request) {
+        return $this->bookService->storeBook($request->all());
     }
 
     /**
@@ -33,9 +38,8 @@ class BooksController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
-        //
+    public function show($id) {
+        return $this->bookService->showBook($id);
     }
 
     /**
@@ -45,9 +49,8 @@ class BooksController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
-        //
+    public function update(BookRequest $request, $id) {
+        return $this->bookService->updateBook($request->all(), $id);
     }
 
     /**
@@ -56,8 +59,8 @@ class BooksController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
-        //
+    public function destroy($id) {
+        return $this->bookService->destroyBook($id);
     }
+
 }

@@ -2,18 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Http\Requests\AuthorRequest;
+use App\Services\AuthorService;
 
-class AuthorsController extends Controller
-{
+class AuthorsController extends Controller {
+
+    protected $authorService;
+
+    public function __construct(AuthorService $authorService) {
+        $this->authorService = $authorService;
+    }
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        //
+    public function index() {
+        return $this->authorService->listAuthors();
     }
 
     /**
@@ -22,9 +28,8 @@ class AuthorsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
-        //
+    public function store(AuthorRequest $request) {
+        return $this->authorService->storeAuthor($request->all());
     }
 
     /**
@@ -33,9 +38,8 @@ class AuthorsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
-        //
+    public function show($id) {
+        return $this->authorService->showAuthor($id);
     }
 
     /**
@@ -45,9 +49,8 @@ class AuthorsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
-        //
+    public function update(AuthorRequest $request, $id) {
+        return $this->authorService->updateAuthor($request->all(), $id);
     }
 
     /**
@@ -56,8 +59,8 @@ class AuthorsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
-        //
+    public function destroy($id) {
+        return $this->authorService->destroyAuthor($id);
     }
+
 }
