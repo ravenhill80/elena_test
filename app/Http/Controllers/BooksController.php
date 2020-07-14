@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\BookRequest;
 use App\Services\BookService;
+use Illuminate\Http\Request;
 
 class BooksController extends Controller {
 
@@ -18,8 +19,8 @@ class BooksController extends Controller {
      *
      * @return \Illuminate\Http\Response
      */
-    public function index() {
-        return $this->bookService->listBooks();
+    public function index(Request $request) {
+        return $this->bookService->listBooks($request);
     }
 
     /**

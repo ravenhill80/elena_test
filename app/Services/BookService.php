@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Repositories\BookRepository;
+use Illuminate\Support\Arr;
 
 class BookService {
 
@@ -12,8 +13,44 @@ class BookService {
         $this->bookRepository = $bookRepository;
     }
 
-    public function listBooks() {
-        $book = $this->bookRepository->getAllBooks();
+    public function listBooks($request) {
+        $book = $this->bookRepository->getAllBooks($request);
+        if ($request->filter) {
+            $sorted = $book;
+            switch ($request->filter) {
+                case 'author_id':
+                    $sorted = $book->sortBy(function ($item, $key) {
+                        return $item->authors->id;
+                    });
+                    break;
+                case 'author_name':
+                    $sorted = $book->sortBy(function ($item, $key) {
+                        return $item->authors->first_name;
+                    });
+                    break;
+                case 'book_name':
+                    $sorted = $book->sortBy(function ($item, $key) {
+                        return $item->name;
+                    });
+                    break;
+                case 'genre_id':
+                    $sorted = $book->sortBy(function ($item, $key) {
+                        return array_values(Arr::sort($item->genres, function ($value) {
+                                    return $value['id'];
+                                }));
+                    });
+                    break;
+                case 'genre_name':
+                    $sorted = $book->sortBy(function ($item, $key) {
+                        return array_values(Arr::sort($item->genres, function ($value) {
+                                    return $value['name'];
+                                }));
+                    });
+                    break;
+            }
+
+            return response()->json(['success' => 'true', 'data' => $sorted->values()->all()], 200);
+        }
         return response()->json(['success' => 'true', 'data' => $book], 200);
     }
 

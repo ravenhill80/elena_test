@@ -22,7 +22,7 @@ class Book extends Model {
     /**
      * Get the author record associated with the book.
      */
-    public function author() {
+    public function authors() {
         return $this->belongsTo('App\Author', 'author', 'id');
     }
 

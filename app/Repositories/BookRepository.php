@@ -11,8 +11,8 @@ class BookRepository extends CoreRepository {
         return Model::class;
     }
 
-    public function getAllBooks() {
-        return $this->startConditions()->with('genres', 'author')->get();
+    public function getAllBooks($request) {
+        return $this->startConditions()->with('genres', 'authors')->orderBy('id')->get();
     }
 
     public function createBook($book) {
